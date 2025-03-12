@@ -153,7 +153,7 @@ function addLines(c: Cube) {
 // Error: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'Cube'. No index signature with a parameter of type 'string' was found on type 'Cube'.
 ```
 
-> c에 들어올 객체는 Cube의 width, height, depth 속성 외에도 어떤 속성이든 가질 수 있기 때문에 c[axios] 타입이 string일 수 있어 에러가 발생한다.
+> c에 들어올 객체는 Cube의 width, height, depth 속성 외에도 어떤 속성이든 가질 수 있기 때문에 c[axis] 타입이 string일 수 있어 에러가 발생한다.
 
 이러한 한계를 극복하고자 **타입스크립트에 명목적 타이핑 언어의 특징을 가미한 식별할 수 있는 유니온(Discriminated Unions) 같은 방법이 생겨났다.**
 
