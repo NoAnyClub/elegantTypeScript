@@ -214,3 +214,99 @@ const obj: WithOptionalSeonghoInKey = {
   }
 }
 ```
+
+<br />
+
+### 6. 템플릿 리터럴 타입(Template Literal Types)
+`템플릿 리터럴 타입`은 js의 템플릿 리터럴 문자열(``)을 사용해서 문자열 리터럴 타입을 선언할 수 있는 문법임. <br />
+위에서 본 예시에 템플릿 리터럴 타입도 같이 포함되어져 있음. 조금 더 간단한 예시로 다시 봐보자
+<img src="../../assets/CH03/template_literal.jpeg" />
+
+이처럼 `템플릿 리터럴`을 사용해서 변수자리에 `문자열 리터럴 유니온 타입`을 넣으면, 각 유니온 타입의 멤버들이 차례대로 해당 변수로 들어가서 재가공 됨.
+
+<br />
+
+### 7. 제네릭(Generic)
+제네릭은 보통 C나 Java와 같은 정적 언어에서 타입간의 재사용성을 높이기 위해서 사용하는 문법임. ts도 `정적 타입`을 가지는 언어이기때문에 `제네릭` 문법을 지원하고 있음.<br />
+
+ts의 제네릭을 조금 더 풀어서 보면 `함수`, `타입`, `클래스` 등에서 내부적으로 사용할 타입을 미리 정해두지 않고, 타입 변수를 사용해서 해당 위치를 비워둔 뒤 실제로 해당 값을 사용할 때 외부에서 `타입 변수` 자리를 사용해 타입을 지정해서 사용하는 방식임.<br />
+`타입 변수`는 주로 `<T>`와 같이 꺾쇠 괄호 내부에 정의하고, 매개변수를 넣는것과 유사하게 원하는 타입을 넣어주면 됨.<br />
+
+```ts
+type ArrayType<T> = T[];
+
+const stringArray: ArrayType<string> = ['hello', 'world'];
+```
+
+> [!TIP]
+> **제네릭의 컨벤션** <br />
+> 보통 타입 변수명으로 `T(Type)`, `E(Element)`, `K(Key)`, `V(Value)`등 한글자로 된 이름을 많이 사용함.
+
+> [!CAUTION]
+> **`any`와 `제네릭`은 달라요** <br />
+> 둘의 명확한 차이점은 배열을 예로 들어보면 편한데, `any`타입의 배열에는 배열 요소들이 전부 같이 않을 수 있음 <br />
+> 하지만 제네릭은 `any`처럼 아무 타입이나 무분멸하게 받는게 아니라, 배열의 생성 시점에 원하는 타입으로 특정하는 것임.
+> ```ts
+> type AnyArray = any[];
+> type ArrayType<T> = T[];
+>
+> const list1: AnyArray = [1, 'hello', true, () => {}]; // 아무거나 가능
+> const list2: ArrayType<number> = [1, 2, 3, 4];
+> const list3: ArrayType<string> = [1, 'hello', true, () => {}]; // > Error!
+> ```
+
+<br />
+
+제네릭 함수를 호출 할 때 ***반드시*** 꺽쇠괄호 안에 타입을 명시해줘야 되는 것은 아님. 타입을 명시하는 부분을 생략하면 컴파일러가 `인자`를 보고 타입을 추론 해줌.
+<img src="../../assets/CH03/generic_type_inference.jpeg" />
+-> 인자에 string타입의 값이 들어와서 컴파일러가 제네릭 함수에 들어온 인자값을 보고 타입을 스스로 추론했음.
+
+만약 특정 요소의 타입을 알 수 없는 경우에는 `타입 기본값`도 할당해 줄 수 있음.
+<br />
+<br />
+<img src="../../assets/CH03/generic_default.png" width='400px' /> <br />
+
+***제네릭을 사용할때 항상 유의헤야 하는 점은 제네릭에는 어떤 타입이든 올 수 있다는 점임.*** <br />
+이걸 왜 유의해야 하냐? 이는 곧, <u>**특정 타입에만 존재하는 프로퍼티나 메서드를 참조하려고 하면 안된다는 뜻**</u>임!! <br />
+예를 들자면
+```ts
+function genericFunc<T>(params: T): number {
+  return params.length; // Error : Property 'length' does not exist on type 'T'.
+}
+```
+이런거임.<br />
+
+`length`는 배열에만 존재하는 프로퍼티고, T에는 어떤 타입이 올지 모르기 때문. 이 문제는 기본 타입을 할당해줘도 해결이 안됨.
+```ts
+function genericFunc<T = number[]>(params: T): number {
+  return params.length; // Error : Property 'length' does not exist on type 'T'.
+}
+```
+<br />
+
+만약, 어떤 타입이 올지 모르지만 `length` 프로퍼티는 반드시 갖는 프로퍼티만 오게 하고 싶다면, 제약을 걸어서 만족시켜줄 수 있음.
+```ts
+interface HasLengthProperty {
+  length: number;
+}
+
+function genericFunc<T extends HasLengthProperty>(params: T): number {
+  return params.length;
+}
+
+function foo(a: number, b: string, ...params: unknown[]) {
+  genericFunc(arguments); // arguments는 유사 배열이므로 length 프로퍼티를 가지기 때문에 가능.
+  genericFunc(params); // 배열도 가능. 배열도 js에서는 객체니까
+  genericFunc({
+    length: 1,
+    name: 'seongho'
+  }); // length프로퍼티를 갖고 있으니까 이것도 가능
+}
+```
+
+> [!CAUTION]
+> **tsx파일에서 화살표 함수에 제네릭을 사용하면 에러가 발생함** <br />
+> 제네릭의 꺾쇠 괄호와 태그의 꺾쇠괄호를 구분할 수 없기 때문임. <br />
+> 아래 이미지를 참고하자. <br />
+> <br />
+> <img src="../../assets/CH03/arrow_function_generic.png">
