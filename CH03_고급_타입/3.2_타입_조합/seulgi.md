@@ -85,7 +85,7 @@ interface IndexSignature1 {
 interface IndexSignature2 {
   [key: string]: number;
   length: number;
-  isValid: boolean;
+  isValid: boolean; // Error!
   name: string; // Error!
 }
 ```

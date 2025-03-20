@@ -198,7 +198,7 @@ console.log(Object.prototype.toString.call(arr)); // [object Array]
 
 ```ts
 const arr: number[] = [1, 2, 3]; // 숫자 원소만 허용
-const arr: Array<number> = [1, 2, 3]; // 위와 도일한 타입
+const arr: Array<number> = [1, 2, 3]; // 위와 동일한 타입
 ```
 
 - 자료형 + 대괄호([]) 형식으로 배열 타입 선언
