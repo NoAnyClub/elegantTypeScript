@@ -249,7 +249,7 @@ console.log(EnumValue[1]); // Error : A const enum member can only be accessed u
 
 > [!CAUTION]
 > **_"const enum으로 선언하더라도, 숫자상수로 관리되는 열거형은 선언값 이외의 값을 할당하거나, 접근할때 이를 방지하지 못한다. <br />
-반변 문자열 상수 방식으로 열거형을 사용하는 것은 접근을 방지한다."_**<br />
+반면 문자열 상수 방식으로 열거형을 사용하는 것은 접근을 방지한다."_**<br />
 -> 이렇게 책에 적혀져 있는데, 테스트 결과 숫자 상수 열거형도 선언값 이외의 값에 접근이 불가함❗️❗️❗️❗️
 <img src="../../assets/CH03/different_book.jpeg" />
 
