@@ -7,19 +7,24 @@
 ### 노티 박스
 
 > [!NOTE]
-> Highlights information that users should take into account, even when skimming.
+> Highlights information that users should take into account, even when skimming. <br />
+> <img src='./assets/main/note_box.png' />
 
 > [!TIP]
-> Optional information to help a user be more successful.
+> Optional information to help a user be more successful. <br />
+> <img src='./assets/main/tip_box.png' />
 
 > [!IMPORTANT]
-> Crucial information necessary for users to succeed.
+> Crucial information necessary for users to succeed. <br />
+> <img src='./assets/main/important_box.png' />
 
 > [!WARNING]
-> Critical content demanding immediate user attention due to potential risks.
+> Critical content demanding immediate user attention due to potential risks. <br />
+> <img src='./assets/main/warning_box.png' />
 
 > [!CAUTION]
-> Negative potential consequences of an action.
+> Negative potential consequences of an action. <br />
+> <img src='./assets/main/caution_box.png' />
 
 <br />
 
