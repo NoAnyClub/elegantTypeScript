@@ -179,3 +179,57 @@ const getAvailableDestinationNameList = async (): Priomise<DestinationName[]> =>
 
 개발자라면 `destinationCodeList.includes(x);`를 해석할 수 있기 때문에 이해할 수 있지만, ts는 str의 타입을 좁히지 못함.<br />
 이처럼 ts에게 반환값에 대한 타입 정보를 알려주고 싶을 경우 `is`를 사용할 수 있음.
+
+<br />
+
+### 나의 실무 예시
+---
+끝으로, 내가 실무에서 실제로 작성한 `커스텀 타입 가드`를 예시로 봐보자
+
+`Promise.allSettled`는 여러개의 promise를 배열로 받아서 비동기적으로 실행해주는 메서드임. <br />
+Promise.all도 동일하게 여러개의 promise를 담은 배열을 인자로 받아서 비동기적으로 실행시켜 주지만
+`Promise.all`은 여러개의 promise중 하나의 promise라도 성공적으로 완료되지 못하면 동시에 실행된 모든 promise가 reject되는 반면,<br />
+`Promise.allSettled`는 동시에 실행된 promise들 중에서 성공적으로 완료되지 못한 promise가 발생해도 전부 reject되지 않고, 성공적으로 완료된 promise들을 확인할 수 있음.
+
+그렇기에 `Promise.allSetted`가 return하는 타입인 `Promise<PromiseSettledResult<T>>`를 살펴보면<br />
+수행한 **promise가 성공적으로 마무리 됬을경우** 할당되는 `PromiseFulfilledResult<T>`와,<br />
+**promise가 성공적으로 마무리 되지 못했을 경우** 할당되는 `PromiseRejectedResult`를 `유니언 타입`으로 return하고 있는 것을 볼 수 있음.
+
+<img src="../../assets/CH04/promiseSettledResult.png" />
+
+<br />
+
+그렇기에 나는 아래와 같은 `커스텀 타입 가드`를 작성해서 유틸 함수로 사용하고 있음.
+```ts
+const isFulfilled = <T>(
+    targetResult: PromiseSettleResult<T>
+): targetResult is PromiseFulfilledResult<T> =>
+    targetResult.status === 'fulfilled';
+```
+해당 `커스텀 타입 가드`는 `PromiseSettledResult<T>`의 타입을 가진 `targetResult`라는 파라미터를 받아서
+만약, 해당 파라미터의 status가 `fulfilled`라면
+targetResult의 타입을 `PromiseFulfilledResult<T>`로 취급하도록 하는 `커스텀 타입 가드`
+
+
+해당 타입가드를 어떻게 활용하고 있을까?
+<img src="../../assets/CH04/promise_allSettled.png" />
+
+`Promise.allSettled`를 통해 여러개의 API를 묶어서 병렬적으로 처리한 뒤,<br />
+각각의 응답을 `isFulfilled 커스텀 타입 가드`를 통해 status가 fulfilled인지 체크하여, 만약 status가 fulfilled라면 성공한 프로미스 타입으로 취급시켜 주는 것.
+
+```ts
+const [
+    dataCategoryResult, // 여기서 dataCategoryResult는 PormiseSettledResult<ICategory>가 됨
+    // ...
+] = Promise.allSettled([
+    getCagetory(params.categoryId),
+    // ...
+])
+
+const dataCategory = isFulfilled(dataCategoryResult)
+    ? dataCategoryResult.value // 여기서 dataCategoryResult는 타입 가드를 통해서 PormiseFulfilledResult<ICategory>가 됨
+    : undefined;
+```
+<img src="../../assets/CH04/fulfilled_promise_image.png" />
+
+이렇게 활용하고 있음.
