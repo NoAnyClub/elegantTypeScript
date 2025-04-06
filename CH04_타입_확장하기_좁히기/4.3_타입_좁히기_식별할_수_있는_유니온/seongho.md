@@ -27,7 +27,7 @@ type ToastError = {
 type AlertError = {
   errorCode: string;
   errorMessage: string;
-  onConfirm: () => void; // 확인 버튼을 누룬 뒤 action
+  onConfirm: () => void; // 확인 버튼을 누른 뒤 action
 };
 ```
 
