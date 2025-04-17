@@ -90,7 +90,7 @@ function getPetName(pet: Pet) {
 
 getPetName(dog); // ✅
 ```
-이게 가능한 이유는 **dog**객체는 **Pet**인터페이스가 갖고있는 **name**이라는 속성을 갖고 있어서 **pet.name**의 방식으로 name에 접근이 가능하기 떄문임. <br />
+이게 가능한 이유는 **dog**객체는 **Pet**인터페이스가 갖고있는 **name**이라는 속성을 갖고 있어서 **pet.name**의 방식으로 name에 접근이 가능하기 때문임. <br />
 이런 방식이 바로 `구조적 타이핑`임. 또다른 예시를 보자면
 
 <br />

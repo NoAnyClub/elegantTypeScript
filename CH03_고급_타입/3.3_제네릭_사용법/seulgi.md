@@ -231,7 +231,7 @@ console.log(getNames({})); // Error! Argument of type '{}' is not assignable to 
 
 > 위의 코드처럼 제약해버리면 제네릭의 유연성을 잃어버린다.
 
-### 유연성을 잃어버리지 않고, 제약해야 할 떄는 타입 매개변수 + 유니온 타입 상속 선언을 활용하자
+### 유연성을 잃어버리지 않고, 제약해야 할 때는 타입 매개변수 + 유니온 타입 상속 선언을 활용하자
 
 ```ts
 <Key extends string | number>
