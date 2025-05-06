@@ -77,10 +77,10 @@ export const userStore = new UserStore();
 ## 2) 훅으로 호출하기
 
 react-query나 useSwr과 같은 훅은 캐시를 사용해 비동기 함수를 호출하며,<br />
-상태 관리 라이브러에서 발생했던 의도치 않은 상태 변경을 방지하는 데 도움이 된다.
+상태 관리 라이브러리에서 발생했던 의도치 않은 상태 변경을 방지하는 데 도움이 된다.
 
 예를 들어, react query에서는 onSuccess 옵션의 invalidateQueries를 사용해<br />
-특정 키의 API를 유효하ㅣ지 않은 상태로 설정할 수 있다.
+특정 키의 API를 유효하지 않은 상태로 설정할 수 있다.
 
 ```ts
 // hooks/usePosts.ts
