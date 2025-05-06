@@ -98,5 +98,3 @@ const useGetJobList = () => {
 따라서 `redux`나 `mobX`와 같은 라이브러리를 `react-query`로 변경하는 추세임.
 
 그러나 늘 그렇듯이 `react-query`가 정답인것은 아님. 어떤 상태 관리 라이브러리를 선택할지는 상황에 따라 적절한 판단이 필요함.
-
-
